@@ -1,0 +1,32 @@
+:root{
+  --bg:#05080b; --panel:#0f1720; --muted:#94a3b8; --accent:#38b6ff; --accent-2:#7c3aed;
+}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:linear-gradient(180deg,#02040a 0%,#07111a 60%);color:#e6eef6;scroll-behavior:smooth}
+.card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.04);backdrop-filter:blur(6px);transition:transform .18s,box-shadow .18s;padding:12px}
+.card:hover{transform:translateY(-6px);box-shadow:0 12px 40px rgba(2,6,23,0.7)}
+.neon{color:var(--accent);text-shadow:0 2px 8px rgba(56,182,255,0.08)}
+.btn-accent{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#04101a;box-shadow:0 8px 40px rgba(56,182,255,0.08)}
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.5rem .9rem;border-radius:8px}
+.muted{color:#bfc9c9}
+.img-fallback{background:linear-gradient(135deg,#071026,#0b1930);display:grid;place-items:center;color:#9fb8d9;font-weight:600}
+.drawer{transition:transform 260ms cubic-bezier(.2,.9,.28,1)}
+.drawer-closed{transform:translateX(110%)}
+.drawer-open{transform:translateX(0%)}
+.modal{position:fixed;inset:0;display:grid;place-items:center;background:rgba(0,0,0,0.45);z-index:70}
+.panel{width:100%;max-width:760px;border-radius:14px;padding:1.25rem;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.04)}
+.product-img{width:100%;height:220px;object-fit:cover;display:block}
+.line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+input,textarea,select{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.04);color:#e6eef6;border-radius:8px;padding:.6rem .75rem}
+.hero-title{animation:heroIn .6s cubic-bezier(.2,.9,.2,1) both}
+@keyframes heroIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.modal-pop{transform:translateY(10px);opacity:0;transition:all .22s}
+.modal-open{transform:translateY(0);opacity:1}
+#toast{animation:toastIn .18s ease both}
+@keyframes toastIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* responsive */
+@media (max-width:640px){
+  header .logo-label{display:none}
+  .product-img{height:160px}
+}
