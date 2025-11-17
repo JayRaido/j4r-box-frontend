@@ -7,9 +7,9 @@ const els = s => Array.from(document.querySelectorAll(s));
 const fmt = new Intl.NumberFormat('en-PH', { style:'currency', currency:'PHP' });
 
 /* ===========================
-   Config - UPDATE THIS AFTER RENDER DEPLOYMENT!
+   Config
    =========================== */
-const DEFAULT_API_BASE = 'http://localhost:5000'; // Will change to Render URL later
+const DEFAULT_API_BASE = 'https://j4r-box-api.onrender.com'; // ← YOUR RENDER URL!
 let API = {
   base: localStorage.getItem('apiBase') || DEFAULT_API_BASE,
   products: function(){ return `${this.base.replace(/\/$/,'')}/api/products`; },
