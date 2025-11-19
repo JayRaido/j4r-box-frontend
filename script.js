@@ -345,10 +345,15 @@ async function apiLogin({email,password}){
 }
 
 // ============= ✅ NEW RENDER FUNCTION WITH CATEGORY SYSTEM =============
-
 function renderProducts(){
   const grid = el('#productGrid');
   if(!grid) return;
+  
+  // ✅ Show loader while rendering
+  const loader = document.getElementById('j4r-loader');
+  if(loader) {
+    loader.classList.remove('hidden');
+  }
   
   let list = [...state.products];
   
@@ -360,7 +365,6 @@ function renderProducts(){
     });
   }
   
-  // ✅ Filter by category (physical, currency, or digital)
   if(state.filters.category && state.filters.category !== 'all') {
     list = list.filter(p => p.category === state.filters.category);
   }
@@ -375,6 +379,20 @@ function renderProducts(){
 
   if(list.length === 0) {
     grid.innerHTML = `
+      <!-- Keep the loader structure -->
+      <div id="j4r-loader" class="col-span-full j4r-loader-container">
+        <div id="load">
+          <div>G</div>
+          <div>N</div>
+          <div>I</div>
+          <div>D</div>
+          <div>A</div>
+          <div>O</div>
+          <div>L</div>
+        </div>
+        <p class="loader-subtitle">Connecting to J4R Box Inventory...</p>
+      </div>
+      
       <div class="col-span-full text-center py-12">
         <div class="text-slate-400 text-xl">No products found${q ? ` matching "${q}"` : ''}</div>
         <button onclick="window.state.filters.q=''; window.state.filters.category='physical'; window.renderProducts(); if(document.getElementById('search-input'))document.getElementById('search-input').value=''; document.querySelectorAll('.category-main-btn').forEach(b=>{b.classList.remove('active'); if(b.dataset.category==='physical')b.classList.add('active')});" 
@@ -384,17 +402,37 @@ function renderProducts(){
         </button>
       </div>
     `;
+    
+    // Hide loader after showing "no products"
+    setTimeout(() => {
+      const loaderAfter = document.getElementById('j4r-loader');
+      if(loaderAfter) loaderAfter.classList.add('hidden');
+    }, 500);
     return;
   }
 
-  grid.innerHTML = list.map(p=>{
-    // ✅ Stock display logic
+  // ✅ Render products (keep your existing product rendering code)
+  grid.innerHTML = `
+    <!-- Keep the loader structure -->
+    <div id="j4r-loader" class="col-span-full j4r-loader-container">
+      <div id="load">
+        <div>G</div>
+        <div>N</div>
+        <div>I</div>
+        <div>D</div>
+        <div>A</div>
+        <div>O</div>
+        <div>L</div>
+      </div>
+      <p class="loader-subtitle">Connecting to J4R Box Inventory...</p>
+    </div>
+  ` + list.map(p=>{
+    // ... your existing product card rendering code ...
     let stockText = '';
     let stockClass = '';
     let showStockBadge = true;
     
     if(p.category === 'currency' || p.category === 'digital') {
-      // ✅ NO stock badge for currency/digital
       showStockBadge = false;
     } else if(p.category === 'physical') {
       if(p.stock > 100) {
@@ -410,7 +448,6 @@ function renderProducts(){
       }
     }
 
-    // ✅ Category badge display
     let categoryText = '';
     let categoryColor = '';
     switch(p.category) {
@@ -431,7 +468,6 @@ function renderProducts(){
         categoryColor = 'rgba(128, 128, 128, 0.9)';
     }
 
-    // ✅ Button logic: "Buy" for currency/digital, "Add to Cart" for physical
     let actionButton = '';
     if(p.category === 'currency') {
       actionButton = `<button data-buy-currency="${p._id}">Buy</button>`;
@@ -466,18 +502,24 @@ function renderProducts(){
   `;
   }).join('');
 
-  // ✅ Event listeners for Add to Cart
+  // ✅ Hide loader after products are rendered
+  setTimeout(() => {
+    const loaderFinal = document.getElementById('j4r-loader');
+    if(loaderFinal) {
+      loaderFinal.classList.add('hidden');
+    }
+  }, 800); // Show loading for 800ms minimum
+
+  // Re-attach event listeners
   grid.querySelectorAll('[data-add]').forEach(b => b.addEventListener('click', (e)=> {
     const productCard = e.target.closest('[data-product-id]');
     addToCart(b.dataset.add, productCard);
   }));
   
-  // ✅ Event listeners for Buy Currency
   grid.querySelectorAll('[data-buy-currency]').forEach(b => b.addEventListener('click', ()=> {
     window.location.href = `buy-currency.html?id=${b.dataset.buyCurrency}`;
   }));
   
-  // ✅ Event listeners for Buy Digital
   grid.querySelectorAll('[data-buy-digital]').forEach(b => b.addEventListener('click', ()=> {
     window.location.href = `buy-digital.html?id=${b.dataset.buyDigital}`;
   }));

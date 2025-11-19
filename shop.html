@@ -1282,6 +1282,274 @@
         width: 100% !important;
       }
     }
+    /* ✅ J4R Box Themed Loading Animation */
+.j4r-loader-container {
+  background: linear-gradient(135deg, rgba(10, 20, 35, 0.95), rgba(5, 10, 20, 0.98));
+  min-height: clamp(300px, 50vh, 500px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Orbitron', sans-serif;
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 2px solid rgba(56, 182, 255, 0.3);
+  box-shadow: 0 10px 40px rgba(56, 182, 255, 0.2);
+}
+
+/* Animated background glow */
+.j4r-loader-container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(56, 182, 255, 0.1) 0%, transparent 70%);
+  animation: rotate-glow 8s linear infinite;
+}
+
+@keyframes rotate-glow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#load {
+  position: relative;
+  width: clamp(300px, 60vw, 600px);
+  height: clamp(40px, 8vh, 60px);
+  margin: 0 auto;
+  overflow: visible;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
+  z-index: 2;
+}
+
+#load div {
+  position: absolute;
+  width: clamp(20px, 4vw, 30px);
+  height: clamp(40px, 8vh, 60px);
+  opacity: 0;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  animation: move 2s linear infinite;
+  -o-animation: move 2s linear infinite;
+  -moz-animation: move 2s linear infinite;
+  -webkit-animation: move 2s linear infinite;
+  transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  color: #38b6ff;
+  text-shadow: 
+    0 0 10px rgba(56, 182, 255, 0.8),
+    0 0 20px rgba(56, 182, 255, 0.6),
+    0 0 30px rgba(56, 182, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#load div:nth-child(1) {
+  animation-delay: 0s;
+}
+
+#load div:nth-child(2) {
+  animation-delay: 0.2s;
+  color: #5ac8fa;
+  text-shadow: 
+    0 0 10px rgba(90, 200, 250, 0.8),
+    0 0 20px rgba(90, 200, 250, 0.6),
+    0 0 30px rgba(90, 200, 250, 0.4);
+}
+
+#load div:nth-child(3) {
+  animation-delay: 0.4s;
+  color: #93ffd8;
+  text-shadow: 
+    0 0 10px rgba(147, 255, 216, 0.8),
+    0 0 20px rgba(147, 255, 216, 0.6),
+    0 0 30px rgba(147, 255, 216, 0.4);
+}
+
+#load div:nth-child(4) {
+  animation-delay: 0.6s;
+  color: #38b6ff;
+  text-shadow: 
+    0 0 10px rgba(56, 182, 255, 0.8),
+    0 0 20px rgba(56, 182, 255, 0.6),
+    0 0 30px rgba(56, 182, 255, 0.4);
+}
+
+#load div:nth-child(5) {
+  animation-delay: 0.8s;
+  color: #5ac8fa;
+  text-shadow: 
+    0 0 10px rgba(90, 200, 250, 0.8),
+    0 0 20px rgba(90, 200, 250, 0.6),
+    0 0 30px rgba(90, 200, 250, 0.4);
+}
+
+#load div:nth-child(6) {
+  animation-delay: 1s;
+  color: #93ffd8;
+  text-shadow: 
+    0 0 10px rgba(147, 255, 216, 0.8),
+    0 0 20px rgba(147, 255, 216, 0.6),
+    0 0 30px rgba(147, 255, 216, 0.4);
+}
+
+#load div:nth-child(7) {
+  animation-delay: 1.2s;
+  color: #38b6ff;
+  text-shadow: 
+    0 0 10px rgba(56, 182, 255, 0.8),
+    0 0 20px rgba(56, 182, 255, 0.6),
+    0 0 30px rgba(56, 182, 255, 0.4);
+}
+
+.loader-subtitle {
+  position: relative;
+  z-index: 2;
+  margin-top: clamp(1.5rem, 3vh, 3rem);
+  font-size: clamp(0.9rem, 1.8vw, 1.2rem);
+  color: #93ffd8;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(147, 255, 216, 0.5);
+  animation: pulse-text 2s ease-in-out infinite;
+  font-family: 'Orbitron', sans-serif;
+}
+
+@keyframes pulse-text {
+  0%, 100% {
+    opacity: 0.6;
+    text-shadow: 0 0 10px rgba(147, 255, 216, 0.5);
+  }
+  50% {
+    opacity: 1;
+    text-shadow: 0 0 20px rgba(147, 255, 216, 0.8);
+  }
+}
+
+@keyframes move {
+  0% {
+    left: 0;
+    opacity: 0;
+    transform: rotate(180deg) scale(0.5);
+  }
+  35% {
+    left: 41%;
+    -moz-transform: rotate(0deg) scale(1);
+    -webkit-transform: rotate(0deg) scale(1);
+    -o-transform: rotate(0deg) scale(1);
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  65% {
+    left: 59%;
+    -moz-transform: rotate(0deg) scale(1);
+    -webkit-transform: rotate(0deg) scale(1);
+    -o-transform: rotate(0deg) scale(1);
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    -moz-transform: rotate(-180deg) scale(0.5);
+    -webkit-transform: rotate(-180deg) scale(0.5);
+    -o-transform: rotate(-180deg) scale(0.5);
+    transform: rotate(-180deg) scale(0.5);
+    opacity: 0;
+  }
+}
+
+@-moz-keyframes move {
+  0% {
+    left: 0;
+    opacity: 0;
+    transform: rotate(180deg) scale(0.5);
+  }
+  35% {
+    left: 41%;
+    -moz-transform: rotate(0deg) scale(1);
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  65% {
+    left: 59%;
+    -moz-transform: rotate(0deg) scale(1);
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    -moz-transform: rotate(-180deg) scale(0.5);
+    transform: rotate(-180deg) scale(0.5);
+    opacity: 0;
+  }
+}
+
+@-webkit-keyframes move {
+  0% {
+    left: 0;
+    opacity: 0;
+    transform: rotate(180deg) scale(0.5);
+  }
+  35% {
+    left: 41%;
+    -webkit-transform: rotate(0deg) scale(1);
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  65% {
+    left: 59%;
+    -webkit-transform: rotate(0deg) scale(1);
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    -webkit-transform: rotate(-180deg) scale(0.5);
+    transform: rotate(-180deg) scale(0.5);
+    opacity: 0;
+  }
+}
+
+@-o-keyframes move {
+  0% {
+    left: 0;
+    opacity: 0;
+    transform: rotate(180deg) scale(0.5);
+  }
+  35% {
+    left: 41%;
+    -o-transform: rotate(0deg) scale(1);
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  65% {
+    left: 59%;
+    -o-transform: rotate(0deg) scale(1);
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    -o-transform: rotate(-180deg) scale(0.5);
+    transform: rotate(-180deg) scale(0.5);
+    opacity: 0;
+  }
+}
+
+/* Hide loader when products are loaded */
+.j4r-loader-container.hidden {
+  display: none;
+}
   </style>
 </head>
 <body class="min-h-screen">
@@ -1382,40 +1650,20 @@
         </div>
 
         <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          <div class="col-span-full glitch-loader-container">
-            <div class="glitch-scanlines"></div>
-            <div class="glitch-noise"></div>
-            
-            <div class="glitch-loader-wrapper">
-              <div class="glitch-text" data-text="LOADING">LOADING</div>
-              
-              <div class="neon-loading-bar"></div>
-              
-              <div class="glitch-loading-dots">
-                <div class="glitch-dot"></div>
-                <div class="glitch-dot"></div>
-                <div class="glitch-dot"></div>
-                <div class="glitch-dot"></div>
-                <div class="glitch-dot"></div>
-              </div>
-              
-              <div class="glitch-progress-text">INITIALIZING SYSTEM...</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-12 text-center">
-          <div class="card inline-block p-6 px-8 rounded-lg" style="max-width: 600px;">
-            <h4 class="text-2xl font-semibold neon mb-3">More Gear Incoming...</h4>
-            <p class="text-slate-400 mb-4">New arrivals and restocks are on the way. Check back soon!</p>
-            <input 
-              type="text" 
-              id="requestInput" 
-              class="request-input" 
-              placeholder="Request or suggest an item..."
-            />
-          </div>
-        </div>
+  <!-- ✅ NEW: J4R Box Themed Loader -->
+  <div id="j4r-loader" class="col-span-full j4r-loader-container">
+    <div id="load">
+      <div>G</div>
+      <div>N</div>
+      <div>I</div>
+      <div>D</div>
+      <div>A</div>
+      <div>O</div>
+      <div>L</div>
+    </div>
+    <p class="loader-subtitle">Connecting to J4R Box Inventory...</p>
+  </div>
+</div>
       </section>
 
     </main>
