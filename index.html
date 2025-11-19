@@ -4,295 +4,505 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>J4R Box | Your Ultimate Game Store</title>
-  <meta name="description" content="J4R Box — Your one-stop shop for premium games, reliable top-ups, and essential gaming gear." />
-  <meta name="theme-color" content="#07111a" />
-
-  <!-- Tailwind CDN (optional for helpers) -->
+  <link rel="icon" type="image/png" href="./images/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100vh;overflow:hidden;font-family:'Orbitron',sans-serif;color:#fff;background:#000;position:relative}
+    
+    canvas#particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;background:#000;pointer-events:none}
+    
+    .content{position:relative;z-index:2;height:100vh;display:grid;grid-template-columns:clamp(260px,20vw,380px) 1fr clamp(260px,20vw,380px);grid-template-rows:minmax(0,auto) minmax(0,1fr);padding:clamp(0.5rem,1.5vh,1.5rem) clamp(0.5rem,1.5vw,1.5rem);gap:clamp(0.8rem,1.5vh,1.5rem);pointer-events:none}
+    
+    .content>*{pointer-events:auto}
+    
+    .svg-title-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: auto;
+      margin: 0;
+      padding: 0;
+    }
 
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="style.css?v=1">
+    .svg-title-container svg {
+      display: block;
+      font: 900 10.5em 'Orbitron', sans-serif;
+      width: 100%;
+      max-width: clamp(600px, 90vw, 960px);
+      height: auto;
+      margin: 0 auto;
+    }
+
+    .text-copy {
+      fill: none;
+      stroke: white;
+      stroke-dasharray: 6% 29%;
+      stroke-width: 3px;
+      stroke-dashoffset: 0%;
+      animation: stroke-offset 5.5s infinite linear;
+      filter: drop-shadow(0 0 10px currentColor);
+    }
+
+    .text-copy:nth-child(1){
+      stroke: #1a4d6d;
+      animation-delay: -1s;
+    }
+
+    .text-copy:nth-child(2){
+      stroke: #2a7ca8;
+      animation-delay: -2s;
+    }
+
+    .text-copy:nth-child(3){
+      stroke: #38b6ff;
+      animation-delay: -3s;
+    }
+
+    .text-copy:nth-child(4){
+      stroke: #5ac8fa;
+      animation-delay: -4s;
+    }
+
+    .text-copy:nth-child(5){
+      stroke: #93ffd8;
+      animation-delay: -5s;
+    }
+
+    @keyframes stroke-offset{
+      100% {stroke-dashoffset: -35%;}
+    }
+    
+    .center-content{grid-column:2;grid-row:1/3;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:clamp(0.5rem,2vh,2rem) 0;overflow-y:auto;overflow-x:hidden;max-height:100%;scrollbar-width:thin;scrollbar-color:rgba(56,182,255,0.3) transparent}
+    
+    .center-content::-webkit-scrollbar{width:6px}
+    .center-content::-webkit-scrollbar-track{background:transparent}
+    .center-content::-webkit-scrollbar-thumb{background:rgba(56,182,255,0.3);border-radius:3px}
+    .center-content::-webkit-scrollbar-thumb:hover{background:rgba(56,182,255,0.5)}
+    
+    .welcome-section{text-align:center;margin-bottom:clamp(0.8rem,1.5vh,1.5rem);flex-shrink:0}
+    
+    .subtitle{font-size:clamp(0.9rem,1.1vw,1.15rem);color:#94a3b8;margin:clamp(0.8rem,1.5vh,1.5rem) 0;max-width:600px;line-height:1.6}
+    
+    .btn-group{display:flex;gap:clamp(2rem,4vw,4rem);margin:clamp(1rem,2vh,2rem) 0;justify-content:center;align-items:center;flex-wrap:wrap;flex-shrink:0}
+    
+    .btn-magic{
+      position:relative;
+      text-decoration:none;
+      font-size:clamp(0.9rem,1.2vw,1.2rem);
+      padding:clamp(0.8rem,1vw,1rem) clamp(1.5rem,2vw,2rem);
+      font-family:'Orbitron',sans-serif;
+      font-weight:700;
+      transition:color 1s;
+      color:#38b6ff;
+      display:inline-block;
+      text-shadow:0 0 20px rgba(56,182,255,0.5);
+    }
+    
+    .btn-magic:hover{
+      color:#93ffd8;
+      text-shadow:0 0 30px rgba(147,255,216,0.8);
+    }
+    
+    .btn-magic::before{
+      position:absolute;
+      content:"";
+      left:0;
+      top:-20%;
+      width:100%;
+      transform:rotateY(0);
+      transition:all 1s;
+      height:140%;
+      border-left:3px solid #38b6ff;
+      border-right:3px solid #93ffd8;
+      box-shadow:0 0 20px rgba(56,182,255,0.5);
+    }
+    
+    .btn-magic:hover::before{
+      transform:rotateY(180deg);
+      box-shadow:0 0 30px rgba(147,255,216,0.8);
+    }
+    
+    .btn-magic::after{
+      position:absolute;
+      content:"";
+      width:120%;
+      height:100%;
+      left:-10%;
+      transform:rotateX(0);
+      transition:all 1s;
+      bottom:0;
+      border-top:3px solid #38b6ff;
+      border-bottom:3px solid #93ffd8;
+      box-shadow:0 0 20px rgba(56,182,255,0.5);
+    }
+    
+    .btn-magic:hover::after{
+      transform:rotateX(180deg);
+      box-shadow:0 0 30px rgba(147,255,216,0.8);
+    }
+    
+    .story-section{
+      background:rgba(15,23,32,0.8);
+      border:2px solid rgba(56,182,255,0.3);
+      border-radius:1rem;
+      padding:clamp(1.5rem,2.2vw,2.5rem);
+      backdrop-filter:blur(10px);
+      max-width:800px;
+      width:100%;
+      transition:all .3s;
+      text-align:center;
+      flex-shrink:0;
+    }
+    .story-section:hover{
+      transform:scale(1.05);
+      border-color:rgba(56,182,255,0.6);
+      box-shadow:0 15px 50px rgba(56,182,255,0.4);
+    }
+    .story-section h2{
+      color:#38b6ff;
+      font-size:clamp(1.6rem,2.4vw,2.5rem);
+      margin-bottom:clamp(0.8rem,1.3vh,1.4rem);
+      text-shadow:0 0 20px rgba(56,182,255,.5);
+    }
+    .story-section p{
+      line-height:1.7;
+      color:#e6eef6;
+      font-size:clamp(1rem,1.15vw,1.2rem);
+      margin-bottom:clamp(0.6rem,1vh,1.1rem);
+    }
+    
+    .feature-corner{
+      background:rgba(15,23,32,0.7);
+      border:2px solid rgba(56,182,255,0.2);
+      border-radius:1rem;
+      padding:clamp(1.5rem,2.5vw,3rem) clamp(1.2rem,2vw,2.5rem);
+      text-align:center;
+      backdrop-filter:blur(10px);
+      transition:all .3s;
+      min-height:clamp(200px,28vh,320px);
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      overflow:hidden;
+    }
+    .feature-corner:hover{
+      border-color:rgba(56,182,255,0.6);
+      box-shadow:0 10px 40px rgba(56,182,255,0.3);
+      transform:scale(1.08);
+    }
+    .feature-corner .icon{
+      font-size:clamp(3rem,4.5vw,5rem);
+      margin-bottom:clamp(0.8rem,1.2vw,1.5rem);
+      display:block;
+      flex-shrink:0;
+      line-height:1;
+    }
+    .feature-corner h3{
+      color:#38b6ff;
+      font-size:clamp(1.3rem,1.8vw,2rem);
+      margin-bottom:clamp(0.6rem,1vw,1.2rem);
+      font-weight:700;
+      line-height:1.2;
+      flex-shrink:0;
+    }
+    .feature-corner p{
+      color:#94a3b8;
+      font-size:clamp(0.95rem,1.2vw,1.35rem);
+      line-height:1.5;
+      flex-grow:0;
+      display:block;
+    }
+    
+    .top-left{grid-column:1;grid-row:1;align-self:start}
+    .top-right{grid-column:3;grid-row:1;align-self:start}
+    .bottom-left{grid-column:1;grid-row:2;align-self:center;margin-top:clamp(2rem,8vh,10vh)}
+    .bottom-right{grid-column:3;grid-row:2;align-self:center;margin-top:clamp(2rem,8vh,10vh)}
+    
+    @media(max-height:800px){
+      .content{padding:0.5rem;gap:0.5rem;grid-template-columns:clamp(230px,18vw,320px) 1fr clamp(230px,18vw,320px)}
+      .center-content{padding:0.5rem 0}
+      .welcome-section{margin-bottom:0.5rem}
+      .btn-group{margin:0.8rem 0}
+      .story-section{padding:1.2rem;max-width:700px}
+      .story-section h2{font-size:1.5rem}
+      .story-section p{font-size:0.95rem}
+      .feature-corner{padding:1.2rem 1rem;min-height:170px}
+      .feature-corner .icon{font-size:2.8rem}
+      .feature-corner h3{font-size:1.25rem}
+      .feature-corner p{font-size:0.9rem}
+      .bottom-left,.bottom-right{margin-top:3vh}
+    }
+    
+    @media(max-height:700px){
+      .content{padding:0.3rem;gap:0.3rem;grid-template-columns:clamp(200px,16vw,280px) 1fr clamp(200px,16vw,280px)}
+      .svg-title-container svg{font-size:8em!important}
+      .welcome-section p{font-size:1rem!important}
+      .subtitle{font-size:0.85rem!important;margin:0.5rem 0}
+      .btn-group{margin:0.5rem 0;gap:1.5rem}
+      .btn-magic{font-size:0.85rem!important;padding:0.6rem 1.2rem!important}
+      .story-section{padding:0.8rem;max-width:600px}
+      .story-section h2{font-size:1.2rem!important}
+      .story-section p{font-size:0.85rem!important;margin-bottom:0.4rem}
+      .feature-corner{padding:1rem 0.8rem;min-height:140px}
+      .feature-corner .icon{font-size:2.2rem}
+      .feature-corner h3{font-size:1.1rem}
+      .feature-corner p{font-size:0.8rem}
+      .bottom-left,.bottom-right{margin-top:2vh}
+    }
+    
+    @media(max-width:1200px){
+      .content{grid-template-columns:1fr;grid-template-rows:auto;padding:1rem;overflow-y:auto;height:auto}
+      .center-content{grid-column:1;grid-row:auto;padding:1rem 0;max-height:none}
+      .feature-corner{display:none}
+      .svg-title-container svg{font-size:7em}
+      .btn-magic{font-size:1rem;padding:0.8rem 1.5rem}
+      .btn-group{gap:2rem}
+      html,body{overflow:auto}
+    }
+
+    @media(max-width:768px){
+      .svg-title-container svg{font-size:5em!important}
+    }
+
+    @media(max-width:480px){
+      .svg-title-container svg{font-size:3.5em!important}
+    }
+  </style>
 </head>
-<body class="min-h-screen font-inter">
+<body>
 
-  <!-- Canvas for optional mouse trail (kept for style in CSS if you want) -->
-  <canvas id="c" class="pointer-events-none fixed inset-0 -z-10"></canvas>
+  <canvas id="particleCanvas"></canvas>
 
-  <!-- HEADER -->
-  <header class="sticky top-0 z-50 bg-transparent/30 backdrop-blur py-3 border-b border-white/5">
-    <div class="max-w-7xl mx-auto px-4 flex items-center justify-between">
-      <a href="#home" class="flex items-center gap-3">
-        <img src="./images/logo.png" alt="J4R Box" class="w-10 h-10 object-contain rounded-sm" />
-        <div class="hidden sm:block">
-          <div class="text-lg font-semibold text-white">J4R Box</div>
-          <div class="text-xs text-slate-400 -mt-1">Game Store</div>
+  <div class="content">
+    
+    <div class="feature-corner top-left">
+      <div class="icon">🎮</div>
+      <h3>Premium Games</h3>
+      <p>Virtual keys, physical copies, and exclusive titles from your favorite platforms.</p>
+    </div>
+    
+    <div class="feature-corner top-right">
+      <div class="icon">💎</div>
+      <h3>In-Game Currency</h3>
+      <p>Top-up your favorite games instantly. Genshin, Valorant, Steam, and more.</p>
+    </div>
+    
+    <div class="center-content">
+      <div class="welcome-section">
+        <p style="font-size:clamp(1rem,1.4vw,1.4rem);color:#94a3b8;margin-bottom:0.5rem">Welcome to</p>
+        
+        <div class="svg-title-container">
+          <svg viewBox="0 0 960 300">
+            <symbol id="s-text">
+              <text text-anchor="middle" x="50%" y="80%">J4R BOX</text>
+            </symbol>
+
+            <g class="g-ants">
+              <use xlink:href="#s-text" class="text-copy"></use>
+              <use xlink:href="#s-text" class="text-copy"></use>
+              <use xlink:href="#s-text" class="text-copy"></use>
+              <use xlink:href="#s-text" class="text-copy"></use>
+              <use xlink:href="#s-text" class="text-copy"></use>
+            </g>
+          </svg>
         </div>
-      </a>
-
-      <nav id="navMain" class="hidden md:flex items-center gap-6 text-sm text-slate-300">
-        <a class="navLink" href="#about">About</a>
-        <a class="navLink" href="#shop">Shop</a>
-        <a class="navLink" href="#contact">Contact</a>
-      </nav>
-
-      <div class="flex items-center gap-3">
-        <button id="openAccountBtn" class="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-white/5">
-          <span style="font-size:18px">👤</span>
-          <span id="accountLabel" class="text-sm text-slate-200">Login</span>
-        </button>
-
-        <button id="openCartBtn" class="relative px-3 py-2 rounded-md hover:bg-white/5">
-          <span style="font-size:18px">🛒</span>
-          <span id="cartCount" class="absolute -top-1 -right-1 bg-blue-400 text-black text-xs px-2 rounded-full">0</span>
-        </button>
-
-        <button id="btnMobile" class="md:hidden p-2 rounded-md hover:bg-white/5">
-          <svg class="w-6 h-6 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 6h16M4 12h16M4 18h16" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
+        
+        <p class="subtitle">
+          An infinite storage for all your gaming needs. Premium games, top-ups, and accessories.
+        </p>
+      </div>
+      
+      <div class="btn-group">
+        <a href="shop.html" class="btn-magic">BROWSE</a>
+        <a href="shop.html?openAuth=true" class="btn-magic">SIGN IN / UP</a>
+      </div>
+      
+      <div class="story-section">
+        <h2>Our Story</h2>
+        <p>Tired of jumping between different sites and launchers just to buy a game or top-up your account? We were too.</p>
+        <p>J4R Box was built by gamers, for gamers, to be the single, trusted place for all your digital and physical gaming needs. Like an useful item storage in a game we keep everything you need for playing in one place.</p>
+        <p style="color:#38b6ff;font-weight:600;margin-top:clamp(0.5rem,1vh,1rem)">Join thousands of gamers who've already discovered the J4R Box! 🖱️</p>
       </div>
     </div>
-
-    <!-- mobile nav -->
-    <div id="mobileNav" class="md:hidden hidden bg-[#05111a] border-t border-white/4">
-      <div class="px-4 py-3 flex flex-col gap-1">
-        <a href="#shop" class="py-2">Shop</a>
-        <a href="#about" class="py-2">About</a>
-        <a href="#contact" class="py-2">Contact</a>
-      </div>
+    
+    <div class="feature-corner bottom-left">
+      <div class="icon">🎧</div>
+      <h3>Gaming Gear</h3>
+      <p>High-quality accessories to level up your gaming experience.</p>
     </div>
-  </header>
-
-  <!-- HERO -->
-  <section id="home" class="h-screen flex items-center justify-center text-center px-4">
-    <div class="max-w-3xl mx-auto">
-      <h1 class="text-5xl md:text-6xl font-extrabold leading-tight hero-title">
-        <span class="block text-white/80">One Stop, All</span>
-        <span class="block text-blue-400 mt-1">Games.</span>
-      </h1>
-      <p class="text-slate-300 mt-4 max-w-xl mx-auto">Your ultimate hub for digital keys, physical copies, and in-game currency. Fast, simple, local-first demo.</p>
-      <div class="mt-8 flex items-center justify-center gap-4">
-        <a id="btnBrowse" href="#shop" class="btn-accent px-6 py-3 rounded-lg font-semibold shadow-lg">Browse The Shop</a>
-        <button id="ctaLogin" class="border border-white/6 px-6 py-3 rounded-lg text-slate-200 hover:bg-white/4">Login / Register</button>
-      </div>
+    
+    <div class="feature-corner bottom-right">
+      <div class="icon">⚡</div>
+      <h3>Instant Delivery</h3>
+      <p>Digital purchases delivered to your email within minutes.</p>
     </div>
-  </section>
 
-  <!-- MAIN -->
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 pb-20 w-full">
-
-    <!-- SHOP -->
-    <section id="shop" class="pt-12">
-      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6">
-        <div>
-          <h2 class="text-3xl font-bold">The Shop</h2>
-          <p class="text-slate-400">Find your next adventure or top-up your favorite game.</p>
-        </div>
-
-        <div class="flex flex-wrap items-center gap-3">
-          <input id="searchInput" placeholder="Search games, accessories..." class="px-3 py-2 rounded bg-transparent border border-white/5 w-full sm:w-64 text-slate-200" />
-          <select id="categoryFilter" class="px-3 py-2 rounded bg-transparent border border-white/5 text-slate-200">
-            <option value="all">All Categories</option>
-            <option value="virtual">Virtual Games</option>
-            <option value="physical">Physical Games</option>
-            <option value="currency">In-game Currency</option>
-            <option value="accessory">Accessories</option>
-          </select>
-          <select id="sortSelect" class="px-3 py-2 rounded bg-transparent border border-white/5 text-slate-200">
-            <option value="featured">Sort: Featured</option>
-            <option value="price-asc">Price: Low to High</option>
-            <option value="price-desc">Price: High to Low</option>
-            <option value="name-asc">Name: A to Z</option>
-            <option value="name-desc">Name: Z to A</option>
-          </select>
-        </div>
-      </div>
-
-      <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
-
-      <div class="mt-12 text-center">
-        <div class="card inline-block p-4 px-6 rounded-lg">
-          <h4 class="text-xl font-semibold neon">More Gear Incoming...</h4>
-          <p class="text-slate-400">New arrivals and restocks are on the way. Check back soon!</p>
-        </div>
-      </div>
-
-      <!-- ADMIN TOOLS -->
-      <div id="adminPanel" class="mt-16 hidden">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="text-xl font-semibold">Admin Tools (Product Management)</h3>
-        </div>
-        <div class="grid lg:grid-cols-2 gap-6">
-          <form id="productForm" class="card p-4 rounded-lg">
-             <h4 class="font-medium mb-2">Create / Update Product</h4>
-            <input type="hidden" id="prodId" />
-            <div class="space-y-2">
-              <label class="text-xs text-slate-300">Name</label>
-              <input id="prodName" class="w-full px-3 py-2 rounded" placeholder="e.g., Elden Ring (PC)" />
-            </div>
-            <div class="space-y-2 mt-2">
-              <label class="text-xs text-slate-300">Category</label>
-              <select id="prodCategory" class="w-full px-3 py-2 rounded">
-                <option value="virtual">Virtual</option>
-                <option value="physical">Physical</option>
-                <option value="currency">In-game Currency</option>
-                <option value="accessory">Accessory</option>
-              </select>
-            </div>
-            <div class="grid grid-cols-2 gap-3 mt-3">
-              <div>
-                <label class="text-xs text-slate-300">Price (PHP)</label>
-                <input id="prodPrice" type="number" step="0.01" min="0" class="w-full px-3 py-2 rounded" />
-              </div>
-              <div>
-                <label class="text-xs text-slate-300">Stock</label>
-                <input id="prodStock" type="number" step="1" min="0" class="w-full px-3 py-2 rounded" />
-              </div>
-            </div>
-            <div class="mt-3">
-              <label class="text-xs text-slate-300">Image URL / relative path</label>
-              <input id="prodImage" class="w-full px-3 py-2 rounded" placeholder="./images/elden.jpg" />
-            </div>
-            <div class="mt-3">
-              <label class="text-xs text-slate-300">Description</label>
-              <textarea id="prodDesc" rows="3" class="w-full px-3 py-2 rounded"></textarea>
-            </div>
-            <div class="mt-4 flex gap-3">
-              <button id="saveProductBtn" class="px-4 py-2 rounded btn-accent">Save Product</button>
-              <button id="resetProductBtn" type="button" class="px-4 py-2 rounded border">Reset</button>
-            </div>
-          </form>
-          <div class="card p-4 rounded-lg">
-            <h4 class="font-medium mb-2">Product List (Edit / Delete)</h4>
-            <div id="adminProductList" class="divide-y divide-white/5 max-h-80 overflow-y-auto"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ABOUT -->
-    <section id="about" class="mt-20">
-      <div class="card p-6 rounded-lg">
-        <h3 class="text-2xl font-semibold">Why J4R Box?</h3>
-        <p class="text-slate-300 mt-3 max-w-3xl">Tired of jumping between different sites and launchers just to buy a game or top-up your account? We were too. J4R Box was built by gamers, for gamers, to be the single, trusted place for all your digital and physical gaming needs.</p>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="mt-20 grid lg:grid-cols-2 gap-6">
-      <div class="card p-6 rounded-lg">
-        <h3 class="text-xl font-semibold">Get In Touch</h3>
-        <p class="text-slate-400 mt-2">Have a question or need support? We're here for you.</p>
-        <div class="mt-4 text-slate-300 space-y-2">
-          <div><span class="font-semibold text-slate-200">Address:</span> Port Road, Margosatubig, Zamboanga del Sur, Mindanao, Philippines</div>
-          <div><span class="font-semibold text-slate-200">Hours:</span> 24/7 Online Support</div>
-          <div><span class="font-semibold text-slate-200">Phone:</span> 0945 396 7929</div>
-          <div><span class="font-semibold text-slate-200">Email:</span> j4rdbox@gmail.com</div>
-        </div>
-      </div>
-      <form id="contactForm" class="card p-6 rounded-lg">
-        <h4 class="text-xl font-semibold">Send a Message</h4>
-        <input id="contactName" placeholder="Your name" class="w-full mt-4 px-3 py-2 rounded" />
-        <input id="contactEmail" placeholder="Email" type="email" class="w-full mt-3 px-3 py-2 rounded" />
-        <textarea id="contactMsg" rows="4" placeholder="Your message..." class="w-full mt-3 px-3 py-2 rounded"></textarea>
-        <div class="mt-3 flex gap-2">
-          <button class="px-4 py-2 btn-accent rounded">Send Message</button>
-          <button type="reset" class="px-4 py-2 rounded border">Reset</button>
-        </div>
-      </form>
-    </section>
-
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="mt-20 border-t border-white/5">
-    <div class="max-w-7xl mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center text-sm text-slate-400">
-      <div>© <span id="year"></span> J4R Box. All Rights Reserved.</div>
-      <div class="flex items-center gap-4 mt-2 md:mt-0">
-        <a href="#shop" class="hover:text-white">Shop</a>
-        <a href="#about" class="hover:text-white">About</a>
-        <a href="#contact" class="hover:text-white">Contact</a>
-      </div>
-    </div>
-  </footer>
-
-  <!-- CART DRAWER -->
-  <div id="cartDrawer" class="fixed inset-0 z-50 hidden">
-    <div id="cartBackdrop" class="absolute inset-0 bg-black/60"></div>
-    <aside class="absolute right-0 top-0 h-full w-full sm:w-[420px] bg-[#070708] drawer drawer-closed">
-      <div class="flex items-center justify-between px-4 py-3 border-b border-white/5">
-        <h3 class="text-lg font-semibold">Your Cart</h3>
-        <button id="closeCartBtn" class="px-3 py-1 rounded hover:bg-white/5">✕</button>
-      </div>
-      <div id="cartDrawerContent" class="p-4 space-y-4 overflow-y-auto h-[calc(100%-180px)]"></div>
-      <div class="border-t border-white/5 p-4">
-        <div class="flex items-center justify-between text-sm mb-3"><span>Subtotal</span><span id="cartSubtotal" class="font-semibold">₱0.00</span></div>
-        <button id="checkoutBtn" class="btn-accent w-full py-2 rounded">Checkout</button>
-        <button id="clearCartBtn" class="w-full mt-2 py-2 rounded border">Clear Cart</button>
-      </div>
-    </aside>
   </div>
 
-  <!-- AUTH MODAL -->
-  <div id="authModal" class="fixed inset-0 z-60 hidden">
-    <div class="absolute inset-0 bg-black/70"></div>
-    <div class="relative max-w-md mx-auto mt-20 p-6 bg-[#07111a] rounded-xl border border-white/6 shadow-lg">
-      <div class="flex items-center justify-between mb-4">
-        <h3 id="authTitle" class="text-2xl font-bold">Login</h3>
-        <button id="closeAuthBtn" class="text-white/70">✕</button>
-      </div>
+  <script>
+  (function(){
+    var canvas=document.getElementById('particleCanvas'),
+        ctx=canvas.getContext('2d'),
+        balls=[],
+        BALL_NUM=30,
+        R=2,
+        ball_color={r:56,g:182,b:255},
+        alpha_f=0.03,
+        link_line_width=0.8,
+        dis_limit=260,
+        mouse_in=false,
+        mouse_ball={x:0,y:0,vx:0,vy:0,r:0,type:'mouse',alpha:1};
+    
+    canvas.width=window.innerWidth;
+    canvas.height=window.innerHeight;
+    
+    function getRandomSpeed(pos){
+      var min=-1,max=1;
+      switch(pos){
+        case 'top':return[randomNumFrom(min,max),randomNumFrom(0.1,max)];
+        case 'right':return[randomNumFrom(min,-0.1),randomNumFrom(min,max)];
+        case 'bottom':return[randomNumFrom(min,max),randomNumFrom(min,-0.1)];
+        case 'left':return[randomNumFrom(0.1,max),randomNumFrom(min,max)];
+        default:return[0,0];
+      }
+    }
+    
+    function randomArrayItem(arr){
+      return arr[Math.floor(Math.random()*arr.length)];
+    }
+    
+    function randomNumFrom(min,max){
+      return Math.random()*(max-min)+min;
+    }
+    
+    function randomSidePos(length){
+      return Math.ceil(Math.random()*length);
+    }
+    
+    function getRandomBall(){
+      var pos=randomArrayItem(['top','right','bottom','left']),speed;
+      switch(pos){
+        case 'top':
+          speed=getRandomSpeed('top');
+          return{x:randomSidePos(canvas.width),y:-R,vx:speed[0],vy:speed[1],r:R,alpha:1,phase:randomNumFrom(0,10)};
+        case 'right':
+          speed=getRandomSpeed('right');
+          return{x:canvas.width+R,y:randomSidePos(canvas.height),vx:speed[0],vy:speed[1],r:R,alpha:1,phase:randomNumFrom(0,10)};
+        case 'bottom':
+          speed=getRandomSpeed('bottom');
+          return{x:randomSidePos(canvas.width),y:canvas.height+R,vx:speed[0],vy:speed[1],r:R,alpha:1,phase:randomNumFrom(0,10)};
+        case 'left':
+          speed=getRandomSpeed('left');
+          return{x:-R,y:randomSidePos(canvas.height),vx:speed[0],vy:speed[1],r:R,alpha:1,phase:randomNumFrom(0,10)};
+      }
+    }
+    
+    function renderBalls(){
+      balls.forEach(function(b){
+        if(!b.hasOwnProperty('type')){
+          ctx.fillStyle='rgba('+ball_color.r+','+ball_color.g+','+ball_color.b+','+b.alpha+')';
+          ctx.beginPath();
+          ctx.arc(b.x,b.y,R,0,Math.PI*2,true);
+          ctx.closePath();
+          ctx.fill();
+        }
+      });
+    }
+    
+    function updateBalls(){
+      var new_balls=[];
+      balls.forEach(function(b){
+        b.x+=b.vx;
+        b.y+=b.vy;
+        if(b.x>-50&&b.x<canvas.width+50&&b.y>-50&&b.y<canvas.height+50){
+          new_balls.push(b);
+        }
+        b.phase+=alpha_f;
+        b.alpha=Math.abs(Math.cos(b.phase));
+      });
+      balls=new_balls.slice(0);
+    }
+    
+    function renderLines(){
+      for(var i=0;i<balls.length;i++){
+        for(var j=i+1;j<balls.length;j++){
+          var fraction=getDisOf(balls[i],balls[j])/dis_limit;
+          if(fraction<1){
+            var alpha=(1-fraction).toString();
+            ctx.strokeStyle='rgba('+ball_color.r+','+ball_color.g+','+ball_color.b+','+alpha+')';
+            ctx.lineWidth=link_line_width;
+            ctx.beginPath();
+            ctx.moveTo(balls[i].x,balls[i].y);
+            ctx.lineTo(balls[j].x,balls[j].y);
+            ctx.stroke();
+            ctx.closePath();
+          }
+        }
+      }
+    }
+    
+    function getDisOf(b1,b2){
+      var delta_x=Math.abs(b1.x-b2.x),delta_y=Math.abs(b1.y-b2.y);
+      return Math.sqrt(delta_x*delta_x+delta_y*delta_y);
+    }
+    
+    function addBallIfy(){
+      if(balls.length<BALL_NUM){
+        balls.push(getRandomBall());
+      }
+    }
+    
+    function render(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      renderBalls();
+      renderLines();
+      updateBalls();
+      addBallIfy();
+      window.requestAnimationFrame(render);
+    }
+    
+    function initBalls(num){
+      for(var i=1;i<=num;i++){
+        balls.push({
+          x:randomSidePos(canvas.width),
+          y:randomSidePos(canvas.height),
+          vx:getRandomSpeed('top')[0],
+          vy:getRandomSpeed('top')[1],
+          r:R,
+          alpha:1,
+          phase:randomNumFrom(0,10)
+        });
+      }
+    }
+    
+    window.addEventListener('resize',function(){
+      canvas.width=window.innerWidth;
+      canvas.height=window.innerHeight;
+    });
+    
+    document.body.addEventListener('mouseenter',function(){
+      mouse_in=true;
+      balls.push(mouse_ball);
+    });
+    
+    document.body.addEventListener('mouseleave',function(){
+      mouse_in=false;
+      balls=balls.filter(function(b){return !b.hasOwnProperty('type')});
+    });
+    
+    document.body.addEventListener('mousemove',function(e){
+      mouse_ball.x=e.clientX;
+      mouse_ball.y=e.clientY;
+    });
+    
+    initBalls(BALL_NUM);
+    render();
+  })();
+</script>
 
-      <!-- LOGIN -->
-      <form id="loginForm" class="space-y-4">
-        <div>
-          <label class="text-sm text-slate-300">Email</label>
-          <input id="loginEmail" type="email" required class="w-full px-3 py-2 rounded bg-black/20 border border-white/5 text-white" />
-        </div>
-        <div>
-          <label class="text-sm text-slate-300">Password</label>
-          <input id="loginPassword" type="password" required class="w-full px-3 py-2 rounded bg-black/20 border border-white/5 text-white" />
-        </div>
-        <button type="submit" class="w-full py-2 rounded btn-accent text-black font-bold">Login</button>
-        <button id="switchToRegister" type="button" class="w-full py-2 rounded border">Create an Account</button>
-      </form>
-
-      <!-- REGISTER -->
-      <form id="registerForm" class="space-y-4 hidden">
-        <div>
-          <label class="text-sm text-slate-300">Name</label>
-          <input id="regName" class="w-full px-3 py-2 rounded bg-black/20 border border-white/5 text-white" />
-        </div>
-        <div>
-          <label class="text-sm text-slate-300">Email</label>
-          <input id="regEmail" type="email" class="w-full px-3 py-2 rounded bg-black/20 border border-white/5 text-white" />
-        </div>
-        <div>
-          <label class="text-sm text-slate-300">Password</label>
-          <input id="regPassword" type="password" minlength="6" class="w-full px-3 py-2 rounded bg-black/20 border border-white/5 text-white" />
-        </div>
-        <button type="submit" class="w-full py-2 rounded btn-accent text-black font-bold">Create Account</button>
-        <button id="switchToLogin" type="button" class="w-full py-2 rounded border">Back to Login</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- WELCOME MODAL -->
-  <div id="welcomeModal" class="modal hidden">
-    <div class="panel">
-      <h3 class="text-xl font-semibold mb-2">Welcome to J4R Box</h3>
-      <p class="muted mb-4">Login to save cart & access admin tools — or continue browsing as guest.</p>
-      <div class="flex gap-3">
-        <button id="welcomeLogin" class="btn btn-primary">Login / Register</button>
-        <button id="welcomeBrowse" class="btn">Browse as Guest</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ACCOUNT MENU (injected by script) -->
-
-  <!-- TOAST -->
-  <div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-4 py-2 rounded shadow-lg z-[70]"></div>
-
-  <!-- API & script -->
-  <script src="script.js?v=1" type="module"></script>
 </body>
 </html>

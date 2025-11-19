@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Buy Currency | J4R Box</title>
+  <link rel="icon" type="image/png" href="./images/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    * { font-family: 'Orbitron', sans-serif !important; }
+    body { background: #000; color: #fff; min-height: 100vh; }
+
+    canvas {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .page-content { position: relative; z-index: 1; }
+
+    .purchase-form {
+      background: linear-gradient(135deg, rgba(15, 23, 32, 0.9), rgba(10, 20, 32, 0.95));
+      border: 2px solid rgba(56, 182, 255, 0.5);
+      border-radius: 1rem;
+      padding: 2rem;
+      max-width: 600px;
+      margin: 4rem auto;
+    }
+
+    .form-input {
+      background: rgba(0, 0, 0, 0.3);
+      border: 2px solid rgba(56, 182, 255, 0.3);
+      color: white;
+      padding: 0.75rem;
+      border-radius: 8px;
+      width: 100%;
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 1rem;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #38b6ff;
+      box-shadow: 0 0 15px rgba(56, 182, 255, 0.3);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #38b6ff, #93ffd8);
+      color: #000;
+      font-weight: 700;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      width: 100%;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-primary:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 30px rgba(56, 182, 255, 0.6);
+    }
+
+    .product-info {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(56, 182, 255, 0.3);
+    }
+
+    /* ✅ Toast notification */
+    #toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, rgba(15, 23, 32, 0.98), rgba(10, 20, 32, 0.98));
+      border: 2px solid #38b6ff;
+      color: #fff;
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      box-shadow: 
+        0 10px 40px rgba(56, 182, 255, 0.4),
+        0 0 60px rgba(56, 182, 255, 0.2);
+      z-index: 99999 !important;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      text-align: center;
+      min-width: 300px;
+      backdrop-filter: blur(10px);
+      animation: toastSlideUp 0.3s ease-out;
+      pointer-events: none;
+      display: none;
+    }
+
+    #toast.show {
+      display: block;
+    }
+
+    @keyframes toastSlideUp {
+      from {
+        opacity: 0;
+        transform: translate(-50%, 20px);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas></canvas>
+
+  <div class="page-content">
+    <div class="purchase-form">
+      <div class="flex items-center justify-between mb-6">
+        <h1 class="text-3xl font-bold" style="color:#38b6ff;text-shadow:0 0 20px rgba(56,182,255,0.6)">Purchase Currency</h1>
+        <a href="shop.html" class="text-slate-400 hover:text-cyan-400">← Back</a>
+      </div>
+
+      <div class="product-info" id="productInfo">
+        <div class="flex gap-4">
+          <img id="productImage" src="" alt="Product" class="w-24 h-24 object-cover rounded-lg">
+          <div class="flex-1">
+            <h3 id="productName" class="text-xl font-bold text-cyan-400 mb-2"></h3>
+            <p id="productPrice" class="text-2xl font-bold text-white"></p>
+          </div>
+        </div>
+      </div>
+
+      <form id="purchaseForm">
+        <div class="mb-4">
+          <label class="block text-sm text-slate-300 mb-2">In-Game Name *</label>
+          <input type="text" id="gameName" class="form-input" placeholder="Enter your in-game name" required>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm text-slate-300 mb-2">In-Game ID/UID *</label>
+          <input type="text" id="gameId" class="form-input" placeholder="Enter your in-game ID" required>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-sm text-slate-300 mb-2">GCash Number (for payment) *</label>
+          <input type="tel" id="gcashNumber" class="form-input" placeholder="+63 912 345 6789" required>
+        </div>
+
+        <div class="mb-6">
+          <label class="block text-sm text-slate-300 mb-2">Email (for receipt) *</label>
+          <input type="email" id="email" class="form-input" placeholder="your@email.com" required>
+        </div>
+
+        <button type="submit" class="btn-primary">Complete Purchase</button>
+      </form>
+
+      <div class="mt-4 text-xs text-slate-400 text-center">
+        💎 Currency will be credited to your account within 5-10 minutes<br>
+        📱 Send payment to GCash: <strong class="text-cyan-400">09453967929</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ Toast Notification -->
+  <div id="toast"></div>
+
+  <script>
+    // Animated background
+    var canvasDots = function() {
+      var canvas = document.querySelector('canvas'),
+          ctx = canvas.getContext('2d'),
+          colorDot = '#38b6ff',
+          color = '#38b6ff';
+      
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      canvas.style.display = 'block';
+      ctx.fillStyle = colorDot;
+      ctx.lineWidth = .1;
+      ctx.strokeStyle = color;
+
+      var mousePosition = { x: canvas.width / 2, y: canvas.height / 2 };
+      var dots = { nb: 350, distance: 60, d_radius: 100, array: [] };
+
+      function Dot(){
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = -.5 + Math.random();
+        this.vy = -.5 + Math.random();
+        this.radius = Math.random();
+      }
+
+      Dot.prototype = {
+        create: function(){ ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false); ctx.fill(); },
+        animate: function(){
+          for(var i = 0; i < dots.nb; i++){
+            var dot = dots.array[i];
+            if(dot.y < 0 || dot.y > canvas.height){ dot.vx = dot.vx; dot.vy = - dot.vy; }
+            else if(dot.x < 0 || dot.x > canvas.width){ dot.vx = - dot.vx; dot.vy = dot.vy; }
+            dot.x += dot.vx; dot.y += dot.vy;
+          }
+        },
+        line: function(){
+          for(var i = 0; i < dots.nb; i++){
+            for(var j = 0; j < dots.nb; j++){
+              var i_dot = dots.array[i], j_dot = dots.array[j];
+              if((i_dot.x - j_dot.x) < dots.distance && (i_dot.y - j_dot.y) < dots.distance && 
+                 (i_dot.x - j_dot.x) > - dots.distance && (i_dot.y - j_dot.y) > - dots.distance){
+                if((i_dot.x - mousePosition.x) < dots.d_radius && (i_dot.y - mousePosition.y) < dots.d_radius && 
+                   (i_dot.x - mousePosition.x) > - dots.d_radius && (i_dot.y - mousePosition.y) > - dots.d_radius){
+                  ctx.beginPath(); ctx.moveTo(i_dot.x, i_dot.y); ctx.lineTo(j_dot.x, j_dot.y); ctx.stroke(); ctx.closePath();
+                }
+              }
+            }
+          }
+        }
+      };
+
+      function createDots(){
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for(var i = 0; i < dots.nb; i++){ dots.array.push(new Dot()); dots.array[i].create(); }
+        dots.array[0].line(); dots.array[0].animate();
+      }
+
+      window.onmousemove = function(e) { mousePosition.x = e.pageX; mousePosition.y = e.pageY; }
+      window.addEventListener('resize', function(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
+      setInterval(createDots, 1000/30);
+    };
+
+    window.onload = function() { canvasDots(); };
+
+    // ✅ Toast function
+    function showToast(msg, duration = 3000) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, duration);
+    }
+
+    // Load product data
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
+
+    if(!productId) {
+      showToast('❌ No product selected!');
+      setTimeout(() => window.location.href = 'shop.html', 2000);
+    }
+
+    const products = JSON.parse(localStorage.getItem('cachedProducts') || '[]');
+    const product = products.find(p => p._id === productId);
+
+    if(!product) {
+      showToast('❌ Product not found!');
+      setTimeout(() => window.location.href = 'shop.html', 2000);
+    }
+
+    document.getElementById('productName').textContent = product.name;
+    document.getElementById('productPrice').textContent = '₱' + product.price.toLocaleString();
+    document.getElementById('productImage').src = product.image || './images/placeholder.png';
+
+    // Handle form submission
+    document.getElementById('purchaseForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const gameName = document.getElementById('gameName').value.trim();
+      const gameId = document.getElementById('gameId').value.trim();
+      const gcashNumber = document.getElementById('gcashNumber').value.trim();
+      const email = document.getElementById('email').value.trim();
+
+      if(!gameName || !gameId || !gcashNumber || !email) {
+        showToast('❌ Please fill all fields!');
+        return;
+      }
+
+      // ✅ Show success toast
+      showToast(`✅ Purchase Successful! ${product.name} - ₱${product.price.toLocaleString()}\n📧 Receipt sent to ${email}`, 4000);
+
+      // Redirect back to shop
+      setTimeout(() => {
+        window.location.href = 'shop.html';
+      }, 4000);
+    });
+  </script>
+</body>
+</html>

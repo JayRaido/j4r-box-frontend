@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>About Us | J4R Box</title>
+  <link rel="icon" type="image/png" href="./images/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    *{font-family:'Orbitron', sans-serif !important}
+    html,body{margin:0;background:#000;overflow-x:hidden;font-family:'Orbitron', sans-serif}
+    
+    canvas#dots-canvas{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      z-index:0;
+      background:#000;
+      pointer-events:none;
+    }
+
+    .page-content{position:relative;z-index:1}
+    
+    .header-logo-svg {
+      display: inline-block;
+      line-height: 1;
+    }
+
+    .header-logo-svg svg {
+      display: block;
+      overflow: visible;
+    }
+
+    .text-copy-header {
+      fill: none;
+      stroke: white;
+      stroke-dasharray: 6% 29%;
+      stroke-width: 2px;
+      stroke-dashoffset: 0%;
+      animation: stroke-offset-header 5.5s infinite linear;
+      filter: drop-shadow(0 0 8px currentColor);
+    }
+
+    .text-copy-header:nth-child(1){
+      stroke: #1a4d6d;
+      animation-delay: -1s;
+    }
+
+    .text-copy-header:nth-child(2){
+      stroke: #2a7ca8;
+      animation-delay: -2s;
+    }
+
+    .text-copy-header:nth-child(3){
+      stroke: #38b6ff;
+      animation-delay: -3s;
+    }
+
+    .text-copy-header:nth-child(4){
+      stroke: #5ac8fa;
+      animation-delay: -4s;
+    }
+
+    .text-copy-header:nth-child(5){
+      stroke: #93ffd8;
+      animation-delay: -5s;
+    }
+
+    @keyframes stroke-offset-header{
+      100% {stroke-dashoffset: -35%;}
+    }
+
+    header .logo-img {
+      width: 75px !important;
+      height: 75px !important;
+    }
+
+    footer .copyright {
+      color: #94a3b8;
+      font-size: 0.875rem;
+    }
+
+    footer a.home-link {
+      color: #ff9800 !important;
+      font-size: 1.25rem;
+      font-weight: 700;
+      transition: all 0.3s;
+    }
+
+    footer a.home-link:hover {
+      color: #ffb74d !important;
+      text-shadow: 0 0 15px rgba(255,152,0,0.6);
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <canvas id="dots-canvas"></canvas>
+
+  <div class="page-content">
+    <header class="sticky top-0 z-50 bg-black/40 backdrop-blur py-3 border-b border-white/10">
+      <div class="max-w-7xl mx-auto px-4 flex items-center justify-between">
+        <!-- Logo Section -->
+        <a href="shop.html" id="logoLink" class="flex items-center gap-3">
+          <img src="./images/logo.png" alt="J4R Box" class="logo-img w-16 h-16 object-contain rounded-sm" />
+          <div class="hidden sm:block">
+            <div class="header-logo-svg">
+              <svg viewBox="0 0 300 80" style="width: 100%; height: auto; max-width: 200px;">
+                <symbol id="s-text-header">
+                  <text text-anchor="middle" x="49%" y="85%" style="font-size: 60px; font-family: 'Orbitron', sans-serif; font-weight: 900;">J4R Box</text>
+                </symbol>
+                <g>
+                  <use xlink:href="#s-text-header" class="text-copy-header"></use>
+                  <use xlink:href="#s-text-header" class="text-copy-header"></use>
+                  <use xlink:href="#s-text-header" class="text-copy-header"></use>
+                  <use xlink:href="#s-text-header" class="text-copy-header"></use>
+                  <use xlink:href="#s-text-header" class="text-copy-header"></use>
+                </g>
+              </svg>
+            </div>
+            <div class="text-slate-400" style="font-size: 13px; margin-top: -6px;">Game Store</div>
+          </div>
+        </a>
+
+        <!-- Navigation Links - Centered -->
+        <nav id="navMain" class="hidden md:flex items-center gap-6 text-sm text-slate-300" style="position: absolute; left: 50%; transform: translateX(-50%);">
+          <a class="navLink text-blue-400" href="about.html">About us</a>
+          <a class="navLink" href="shop.html">Shop</a>
+          <a class="navLink" href="contact.html">Contact</a>
+        </nav>
+
+        <!-- Mobile Menu Button -->
+        <button id="btnMobile" class="md:hidden p-2 rounded-md hover:bg-white/5">
+          <svg class="w-6 h-6 text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 6h16M4 12h16M4 18h16" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+      <div id="mobileNav" class="md:hidden hidden bg-[#05111a] border-t border-white/4">
+        <div class="px-4 py-3 flex flex-col gap-1">
+          <a href="about.html" class="py-2 text-blue-400">About us</a>
+          <a href="shop.html" class="py-2">Shop</a>
+          <a href="contact.html" class="py-2">Contact</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 py-20">
+      
+      <div class="text-center mb-16">
+        <h1 class="text-5xl font-bold" style="color:#38b6ff;text-shadow:0 0 20px rgba(56,182,255,0.6);font-family:'Orbitron',sans-serif">About J4R Box</h1>
+        <p class="text-xl text-slate-400 mt-4">Your Magical Gaming Inventory</p>
+      </div>
+
+      <div class="card p-8 rounded-lg mb-8">
+        <h2 class="text-3xl font-semibold mb-4 neon">Our Story</h2>
+        <p class="text-slate-300 leading-relaxed mb-4">
+          Tired of jumping between different sites and launchers just to buy a game or top-up your account? We were too.
+        </p>
+        <p class="text-slate-300 leading-relaxed">
+          J4R Box was built by gamers, for gamers, to be the single, trusted place for all your digital and physical gaming needs. Like an infinite storage from your favorite isekai anime, we keep everything you need in one magical place.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-6 mb-8">
+        <div class="card p-6 rounded-lg">
+          <h3 class="text-2xl font-semibold mb-3 text-blue-400">🎮 Our Mission</h3>
+          <p class="text-slate-300">
+            To provide gamers with a seamless, trustworthy platform for all their gaming purchases — from AAA titles to in-game currency.
+          </p>
+        </div>
+
+        <div class="card p-6 rounded-lg">
+          <h3 class="text-2xl font-semibold mb-3 text-purple-400">✨ Our Vision</h3>
+          <p class="text-slate-300">
+            To become the #1 gaming marketplace in the Philippines, where every gamer finds what they need instantly.
+          </p>
+        </div>
+      </div>
+
+      <div class="card p-8 rounded-lg mb-8">
+        <h2 class="text-3xl font-semibold mb-6">Why Choose J4R Box?</h2>
+        <div class="space-y-4">
+          <div class="flex items-start gap-4">
+            <span class="text-3xl">⚡</span>
+            <div>
+              <h4 class="font-semibold text-lg">Instant Delivery</h4>
+              <p class="text-slate-400">Digital keys and top-ups delivered within minutes</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <span class="text-3xl">🛡️</span>
+            <div>
+              <h4 class="font-semibold text-lg">Secure Transactions</h4>
+              <p class="text-slate-400">Your payment information is always protected</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <span class="text-3xl">💰</span>
+            <div>
+              <h4 class="font-semibold text-lg">Best Prices</h4>
+              <p class="text-slate-400">Competitive pricing on all products</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <span class="text-3xl">🌟</span>
+            <div>
+              <h4 class="font-semibold text-lg">24/7 Support</h4>
+              <p class="text-slate-400">We're always here to help you</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <a href="shop.html" class="btn-accent px-8 py-4 rounded-lg font-semibold text-lg inline-block">
+          Start Shopping Now
+        </a>
+      </div>
+
+    </main>
+
+    <footer class="mt-20 border-t border-white/5">
+      <div class="max-w-7xl mx-auto px-4 py-6 flex justify-between items-center text-sm">
+        <div class="copyright">© <span id="year"></span> J4R Box. All Rights Reserved.</div>
+        <a href="index.html" class="home-link">Home</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+document.getElementById('btnMobile')?.addEventListener('click', function() {
+  document.getElementById('mobileNav').classList.toggle('hidden');
+});
+
+(function(){
+  var canvas=document.getElementById('dots-canvas'),
+      ctx=canvas.getContext('2d'),
+      balls=[],
+      BALL_NUM=30,
+      R=2,
+      ball_color={r:56,g:182,b:255},
+      alpha_f=0.03,
+      link_line_width=0.8,
+      dis_limit=260,
+      mouse_in=false,
+      mouse_ball={x:0,y:0,vx:0,vy:0,r:0,type:'mouse',alpha:1};
+  
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+  
+  function getRandomSpeed(pos){
+    var min=-1,max=1;
+    switch(pos){
+      case 'top':return[randomNumFrom(min,max),randomNumFrom(0.1,max)];
+      case 'right':return[randomNumFrom(min,-0.1),randomNumFrom(min,max)];
+      case 'bottom':return[randomNumFrom(min,max),randomNumFrom(min,-0.1)];
+      case 'left':return[randomNumFrom(0.1,max),randomNumFrom(min,max)];
+      default:return[0,0];
+    }
+  }
+  
+  function randomArrayItem(arr){
+    return arr[Math.floor(Math.random()*arr.length)];
+  }
+  
+  function randomNumFrom(min,max){
+    return Math.random()*(max-min)+min;
+  }
+  
+  function randomSidePos(length){
+    return Math.ceil(Math.random()*length);
+  }
+  
+  function getRandomBall(){
+    var pos=randomArrayItem(['top','right','bottom','left']),speed;
+    switch(pos){
+      case 'top':
+        speed=getRandomSpeed('top');
+        return{x:randomSidePos(canvas.width),y:-R,vx:speed[0],vy:speed[1],r:R,alpha:1,phase:randomNumFrom(0,10)};
+      case 'right':
+        speed=getRandomSpeed('right');
+        return{x:canvas.width+R,y:randomSidePos(canvas.height),vx:speed[0],vy:speed[1],r:R,alpha:1,phase:randomNumFrom(0,10)};
+      case 'bottom':
+        speed=getRandomSpeed('bottom');
+        return{x:randomSidePos(canvas.width),y:canvas.height+R,vx:speed[0],vy:speed[1],r:R,alpha:1,phase:randomNumFrom(0,10)};
+      case 'left':
+        speed=getRandomSpeed('left');
+        return{x:-R,y:randomSidePos(canvas.height),vx:speed[0],vy:speed[1],r:R,alpha:1,phase:randomNumFrom(0,10)};
+    }
+  }
+  
+  function renderBalls(){
+    balls.forEach(function(b){
+      if(!b.hasOwnProperty('type')){
+        ctx.fillStyle='rgba('+ball_color.r+','+ball_color.g+','+ball_color.b+','+b.alpha+')';
+        ctx.beginPath();
+        ctx.arc(b.x,b.y,R,0,Math.PI*2,true);
+        ctx.closePath();
+        ctx.fill();
+      }
+    });
+  }
+  
+  function updateBalls(){
+    var new_balls=[];
+    balls.forEach(function(b){
+      b.x+=b.vx;
+      b.y+=b.vy;
+      if(b.x>-50&&b.x<canvas.width+50&&b.y>-50&&b.y<canvas.height+50){
+        new_balls.push(b);
+      }
+      b.phase+=alpha_f;
+      b.alpha=Math.abs(Math.cos(b.phase));
+    });
+    balls=new_balls.slice(0);
+  }
+  
+  function renderLines(){
+    for(var i=0;i<balls.length;i++){
+      for(var j=i+1;j<balls.length;j++){
+        var fraction=getDisOf(balls[i],balls[j])/dis_limit;
+        if(fraction<1){
+          var alpha=(1-fraction).toString();
+          ctx.strokeStyle='rgba('+ball_color.r+','+ball_color.g+','+ball_color.b+','+alpha+')';
+          ctx.lineWidth=link_line_width;
+          ctx.beginPath();
+          ctx.moveTo(balls[i].x,balls[i].y);
+          ctx.lineTo(balls[j].x,balls[j].y);
+          ctx.stroke();
+          ctx.closePath();
+        }
+      }
+    }
+  }
+  
+  function getDisOf(b1,b2){
+    var delta_x=Math.abs(b1.x-b2.x),delta_y=Math.abs(b1.y-b2.y);
+    return Math.sqrt(delta_x*delta_x+delta_y*delta_y);
+  }
+  
+  function addBallIfy(){
+    if(balls.length<BALL_NUM){
+      balls.push(getRandomBall());
+    }
+  }
+  
+  function render(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    renderBalls();
+    renderLines();
+    updateBalls();
+    addBallIfy();
+    window.requestAnimationFrame(render);
+  }
+  
+  function initBalls(num){
+    for(var i=1;i<=num;i++){
+      balls.push({
+        x:randomSidePos(canvas.width),
+        y:randomSidePos(canvas.height),
+        vx:getRandomSpeed('top')[0],
+        vy:getRandomSpeed('top')[1],
+        r:R,
+        alpha:1,
+        phase:randomNumFrom(0,10)
+      });
+    }
+  }
+  
+  window.addEventListener('resize',function(){
+    canvas.width=window.innerWidth;
+    canvas.height=window.innerHeight;
+  });
+  
+  document.body.addEventListener('mouseenter',function(){
+    mouse_in=true;
+    balls.push(mouse_ball);
+  });
+  
+  document.body.addEventListener('mouseleave',function(){
+    mouse_in=false;
+    balls=balls.filter(function(b){return !b.hasOwnProperty('type')});
+  });
+  
+  document.body.addEventListener('mousemove',function(e){
+    mouse_ball.x=e.clientX;
+    mouse_ball.y=e.clientY;
+  });
+  
+  initBalls(BALL_NUM);
+  render();
+})();
+
+document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
